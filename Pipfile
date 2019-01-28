@@ -4,6 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+kaz = {editable = true, extras = ["linting", "testing"], path = "."}
 
 [dev-packages]
-
