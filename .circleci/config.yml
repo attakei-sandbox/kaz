@@ -1,0 +1,29 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.1
+
+    working_directory: ~/kaz
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps-{{ .Branch }}-{{ checksum "Pipfile" }}
+      - run:
+          name: Install dependencies
+          command: |
+            sudo pip install pipenv
+            pipenv install -e '.[testing]'
+      - save_cache:
+          key: deps-{{ .Branch }}-{{ checksum "Pipfile" }}
+          paths:
+            - ~/.local
+      - run:
+          name: Run tests
+          command: |
+            pipenv run pytest
