@@ -1,11 +1,21 @@
 import click
 
+from . import __version__ as ver
 
-@click.command()
+
+@click.group()
 def cmd():
-    msg = 'Hello kaz!'
-    click.echo(msg)
+    """Portable application manager"""
+    pass
+
+
+@cmd.command()
+def version():
+    """Display version"""
+    msg = 'kaz {}'
+    click.echo(msg.format(ver))
 
 
 def main():
+    """Etrypoint"""
     cmd()
