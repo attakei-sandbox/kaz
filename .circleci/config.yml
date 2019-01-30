@@ -24,6 +24,10 @@ jobs:
           paths:
             - ~/.local
       - run:
+          name: Lint sources
+          command: |
+            pipenv run flake8
+      - run:
           name: Run tests
           command: |
             pipenv run pytest
