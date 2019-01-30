@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-kaz = {editable = true, path = "."}
+kaz = {editable = true, extras = ["testing"], path = "."}
 
 [dev-packages]
 sphinx = "*"
