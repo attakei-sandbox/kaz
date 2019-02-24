@@ -21,6 +21,18 @@ class Application(object):
             if root is None else Path(root).resolve()
         self.logger = Logger.getChild('Application')
 
+    @property
+    def log_dir(self):
+        return self.root / 'log'
+
+    @property
+    def bin_dir(self):
+        return self.root / 'bin'
+
+    @property
+    def repo_dir(self):
+        return self.root / 'repo'
+
     def create(self):
         """Prepare application root
         """
@@ -29,8 +41,9 @@ class Application(object):
         except FileExistsError:
             sys.stderr.write('Application path is already exists.\n')
             return
-        (self.root / 'bin').mkdir(self.MOD_DIR)
-        (self.root / 'log').mkdir(self.MOD_DIR)
-        (self.root / 'repo').mkdir(self.MOD_DIR)
-        logging.config.dictConfig(get_logconf(self.root / 'log'))
+        self.bin_dir.mkdir(self.MOD_DIR)
+        self.log_dir.mkdir(self.MOD_DIR)
+        self.repo_dir.mkdir(self.MOD_DIR)
+        # Logging handler need to exists output folder
+        logging.config.dictConfig(get_logconf(self.log_dir))
         self.logger.info('Initialized!')
