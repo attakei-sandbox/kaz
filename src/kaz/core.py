@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .catalog import Catalog
 from .logging import get_logconf
+from .repo.github import Repository
 
 
 DEFAULT_ROOT_DIR = '.kaz'
@@ -62,3 +63,8 @@ class Application(object):
             json.dumps(meta, indent=True))
         repo_catalog = Catalog()
         repo_catalog.save(repo_dir / 'catalog.json')
+
+    def get_repo(self, name):
+        repo = Repository()
+        repo.load(self.repo_dir / name)
+        return repo

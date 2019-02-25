@@ -90,6 +90,26 @@ def add(name, asset):
         {'vendor': 'github', 'path': github_path, 'asset': asset})
 
 
+@cmd.command()
+@click.argument('name')
+def pull(name):
+    root = find_appdir()
+    if not root.exists():
+        click.echo(
+            click.style('WARNING:', fg='yellow', bg='magenta'), nl=False)
+        click.echo(
+            click.style(' Root directory is not exists', fg='magenta'))
+        return
+    app = Application(root)
+    if not app.repo_exists(name):
+        click.echo(click.style(
+            'Application "{}" is not exists.'.format(name),
+            fg='magenta'))
+        return
+    repo = app.get_repo(name)
+    repo.pull()
+
+
 def main():
     """Etrypoint"""
     cmd()
