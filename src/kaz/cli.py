@@ -1,9 +1,10 @@
+import os.path
 from pathlib import Path
 
 import click
 
 from . import __version__ as ver
-from .core import Application
+from .core import Application, DEFAULT_ROOT_DIR
 
 
 @click.group()
@@ -20,9 +21,16 @@ def version():
 
 
 @cmd.command()
-@click.argument('root', type=click.Path(resolve_path=True))
+@click.argument(
+    'root',
+    default=os.path.expanduser('~/' + DEFAULT_ROOT_DIR),
+    type=click.Path(resolve_path=True))
 def init(root):
-    """Initialize kaz env"""
+    """Initialize kaz env
+
+    If you don't specify ROOT as initialize target,
+    kaz initialize target is used '~/.kaz'.
+    """
     root = Path(root)
     if root.exists():
         click.echo(
