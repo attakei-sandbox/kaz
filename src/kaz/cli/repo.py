@@ -8,7 +8,7 @@ from ..core import Application
 
 @click.argument('name')
 @click.argument('asset')
-def add(name, asset):
+def add_repo(name, asset):
     root = find_appdir()
     if not root.exists():
         click.echo(
@@ -32,7 +32,7 @@ def add(name, asset):
 
 
 @click.argument('name')
-def pull(name):
+def pull_version(name):
     root = find_appdir()
     if not root.exists():
         click.echo(
@@ -52,7 +52,7 @@ def pull(name):
 
 @click.argument('name')
 @click.argument('version')
-def link(name, version):
+def link_version(name, version):
     root = find_appdir()
     if not root.exists():
         click.echo(
@@ -70,6 +70,6 @@ def link(name, version):
 
 
 def register(cmd):
-    cmd.command()(add)
-    cmd.command()(pull)
-    cmd.command()(link)
+    cmd.command(name='add')(add_repo)
+    cmd.command(name='pull')(pull_version)
+    cmd.command(name='link')(link_version)

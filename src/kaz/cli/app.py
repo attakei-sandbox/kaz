@@ -13,7 +13,7 @@ from ..core import Application, DEFAULT_ROOT_DIR
     'root',
     default=os.path.expanduser('~/' + DEFAULT_ROOT_DIR),
     type=click.Path(resolve_path=True))
-def init(root):
+def initialize_app(root):
     """Initialize kaz env
 
     If you don't specify ROOT as initialize target,
@@ -40,4 +40,4 @@ def init(root):
 
 
 def register(cmd):
-    cmd.command()(init)
+    cmd.command(name='init')(initialize_app)
