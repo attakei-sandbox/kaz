@@ -68,3 +68,13 @@ class Application(object):
         repo = Repository()
         repo.load(self.repo_dir / name)
         return repo
+
+    def link_repo(self, name, version):
+        repo = self.get_repo(name)
+        if version not in repo.catalog.versions:
+            print('WARNING version {} is not exists.'.format(version))
+            return
+        bin_target = self.bin_dir / name
+        bin_target.symlink_to(Path('../repo') / name / version)
+        repo.catalog.installed = version
+        repo.catalog.save(repo.catalog_path)
