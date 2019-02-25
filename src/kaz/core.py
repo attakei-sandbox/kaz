@@ -1,10 +1,14 @@
 """Core of kaz
 """
+import json
 import logging
 import logging.config
 import sys
 from pathlib import Path
+
+from .catalog import Catalog
 from .logging import get_logconf
+from .repo.github import Repository
 
 
 DEFAULT_ROOT_DIR = '.kaz'
@@ -47,3 +51,30 @@ class Application(object):
         # Logging handler need to exists output folder
         logging.config.dictConfig(get_logconf(self.log_dir))
         self.logger.info('Initialized!')
+
+    def repo_exists(self, name):
+        return (self.repo_dir / name).exists()
+
+    def add_repo(self, name, meta):
+        repo_dir = self.repo_dir / name
+        repo_dir.mkdir(self.MOD_DIR)
+        repo_metadata = repo_dir / 'metadata.json'
+        repo_metadata.write_text(
+            json.dumps(meta, indent=True))
+        repo_catalog = Catalog()
+        repo_catalog.save(repo_dir / 'catalog.json')
+
+    def get_repo(self, name):
+        repo = Repository()
+        repo.load(self.repo_dir / name)
+        return repo
+
+    def link_repo(self, name, version):
+        repo = self.get_repo(name)
+        if version not in repo.catalog.versions:
+            print('WARNING version {} is not exists.'.format(version))
+            return
+        bin_target = self.bin_dir / name
+        bin_target.symlink_to(Path('../repo') / name / version)
+        repo.catalog.installed = version
+        repo.catalog.save(repo.catalog_path)
