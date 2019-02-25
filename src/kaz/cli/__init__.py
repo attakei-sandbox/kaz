@@ -5,8 +5,8 @@ import textwrap
 
 import click
 
-from . import __version__ as ver
-from .core import Application, DEFAULT_ROOT_DIR
+from .. import __version__ as ver
+from ..core import Application, DEFAULT_ROOT_DIR
 
 
 ROOT_DIR_ENV = 'KAZ_ROOT'
