@@ -1,5 +1,6 @@
 import os.path
 from pathlib import Path
+import textwrap
 
 import click
 
@@ -39,7 +40,14 @@ def init(root):
         return
     app = Application(root)
     app.create()
-    # TODO: Display follow-up message
+    click.echo(textwrap.dedent("""
+    Thank you for using kaz.
+    Initialize is finished in {root}.
+
+    Next your steps:
+        1. Set bin directory of kaz into enviroment variables PATH
+        export PATH={root}/bin:$PATH
+    """.format(root=root)).strip())
 
 
 def main():
