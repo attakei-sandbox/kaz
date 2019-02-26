@@ -1,13 +1,14 @@
 import click
 
-from . import find_appdir, cmd
 from ..core import Application
+from . import cmd, find_appdir
 
 
 @cmd.command(name='add')
 @click.argument('name')
 @click.argument('asset')
 def handler(name, asset):
+    """Add new repository"""
     root = find_appdir()
     if not root.exists():
         click.echo(

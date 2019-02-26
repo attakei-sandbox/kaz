@@ -1,13 +1,14 @@
 import click
 
-from . import find_appdir, cmd
 from ..core import Application
+from . import cmd, find_appdir
 
 
 @cmd.command(name='link')
 @click.argument('name')
 @click.argument('version')
 def handler(name, version):
+    """Link specify version as enabled command"""
     root = find_appdir()
     if not root.exists():
         click.echo(
