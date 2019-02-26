@@ -1,5 +1,3 @@
-"""List of application management commands
-"""
 import os
 import textwrap
 from pathlib import Path
@@ -7,13 +5,15 @@ from pathlib import Path
 import click
 
 from ..core import Application, DEFAULT_ROOT_DIR
+from . import cmd
 
 
+@cmd.command(name='init')
 @click.argument(
     'root',
     default=os.path.expanduser('~/' + DEFAULT_ROOT_DIR),
     type=click.Path(resolve_path=True))
-def initialize_app(root):
+def handler(root):
     """Initialize kaz env
 
     If you don't specify ROOT as initialize target,
@@ -37,7 +37,3 @@ def initialize_app(root):
         2. Set bin directory of kaz into enviroment variables PATH
         export PATH={root}/bin:$PATH
     """.format(root=root)).strip())
-
-
-def register(cmd):
-    cmd.command(name='init')(initialize_app)

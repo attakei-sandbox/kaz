@@ -1,10 +1,21 @@
+import importlib
+import os
+from pathlib import Path
+
 import click
 
-from .. import __version__ as ver
-from . import (
-    app as app_cmds,
-    repo as repo_cmds,
-)
+from ..core import DEFAULT_ROOT_DIR
+
+
+ROOT_DIR_ENV = 'KAZ_ROOT'
+
+
+def find_appdir():
+    """Find application directory for CLI
+    """
+    if ROOT_DIR_ENV in os.environ:
+        return Path(os.environ[ROOT_DIR_ENV])
+    return Path.home() / DEFAULT_ROOT_DIR
 
 
 @click.group()
@@ -13,15 +24,11 @@ def cmd():
     pass
 
 
-@cmd.command()
-def version():
-    """Display version"""
-    msg = 'kaz {}'
-    click.echo(msg.format(ver))
-
-
 def main():
     """Etrypoint"""
-    app_cmds.register(cmd)
-    repo_cmds.register(cmd)
+    commands_dir = Path(__file__).parent
+    for module in commands_dir.glob('*.py'):
+        if module.name.startswith('__'):
+            continue
+        importlib.import_module(__name__ + '.' + module.stem)
     cmd()
