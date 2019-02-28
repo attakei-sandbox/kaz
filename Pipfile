@@ -8,3 +8,4 @@ kaz = {editable = true, extras = ["testing"], path = "."}
 
 [dev-packages]
 sphinx = "*"
+"doc8" = "*"
